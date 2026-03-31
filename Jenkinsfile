@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/Jenith-datatemplate/Static-webpage.git'
+                git branch: 'main', url:  'https://github.com/Jenith-datatemplate/Static-webpage.git'
             }
         }
 
