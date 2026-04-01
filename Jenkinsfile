@@ -7,7 +7,7 @@ pipeline {
     parameters {
         choice(
             name: 'ACTION',
-            choices: ['build', 'deploy', 'remove'],
+            choices: ['build & deploy', 'remove'],
             description: 'Select what you want to do'
         )
     }
@@ -15,7 +15,7 @@ pipeline {
     stages {
 
         stage('Checkout Code') {
-            when { expression { params.ACTION == 'build' } }
+            when { expression { params.ACTION == 'build & deploy' } }
             steps {
                 git url: 'https://github.com/Jenith-datatemplate/Static-webpage.git',
                     branch: 'main'
@@ -23,14 +23,14 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            when { expression { params.ACTION == 'build' } }
+            when { expression { params.ACTION == 'build & deploy' } }
             steps {
                 sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
         stage('Docker Login') {
-            when { expression { params.ACTION == 'build' } }
+            when { expression { params.ACTION == 'build & deploy' } }
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-2008',
@@ -43,14 +43,14 @@ pipeline {
         }
 
         stage('Docker Push') {
-            when { expression { params.ACTION == 'build' } }
+            when { expression { params.ACTION == 'build & deploy' } }
             steps {
                 sh 'docker push $DOCKER_IMAGE'
             }
         }
 
         stage('Deploy Application') {
-            when { expression { params.ACTION == 'deploy' } }
+            when { expression { params.ACTION == 'build & deploy' } }
             steps {
                 sh '''
                docker stop nginx-container || true
