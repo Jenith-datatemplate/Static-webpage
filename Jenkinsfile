@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "jenithdt/static-webpage:v1"
+        DOCKER_IMAGE = "jenithdt/static-webpage:${BUILD_NUMBER}"
     }
     parameters {
         choice(
