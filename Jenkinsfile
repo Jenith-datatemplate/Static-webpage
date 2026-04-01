@@ -25,7 +25,10 @@ pipeline {
         stage('Build Docker Image') {
             when { expression { params.ACTION == 'build & deploy' } }
             steps {
-                sh 'docker build -t $DOCKER_IMAGE .'
+                sh '''
+                docker build -t $DOCKER_IMAGE .
+                docker tag $DOCKER_IMAGE jenithdt/static-webpage:latest
+                '''
             }
         }
 
@@ -45,7 +48,10 @@ pipeline {
         stage('Docker Push') {
             when { expression { params.ACTION == 'build & deploy' } }
             steps {
-                sh 'docker push $DOCKER_IMAGE'
+               sh '''
+                docker push $DOCKER_IMAGE
+                docker push jenithdt/static-webpage:latest
+                '''
             }
         }
 
