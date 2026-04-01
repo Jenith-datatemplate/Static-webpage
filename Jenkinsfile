@@ -18,7 +18,7 @@ pipeline {
             when { expression { params.ACTION == 'build' } }
             steps {
                 git url: 'https://github.com/Jenith-datatemplate/Static-webpage.git',
-                    branch: 'master'
+                    branch: 'main'
             }
         }
 
